@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "UAIDS"
+version = "1.0.0"
+id = "artifacts/uaids"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20960
+
+[services.development]
+run = "pnpm --filter @workspace/uaids run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/uaids", "run", "build" ]
+publicDir = "artifacts/uaids/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20960"
+BASE_PATH = "/"

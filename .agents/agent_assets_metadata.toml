@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "3QjW_LwNX2yMItrlVDVBw"
+uri = "file://exports/uaids_project.zip"
+type = "unspecified"
+title = "UAIDS Project (full source)"
