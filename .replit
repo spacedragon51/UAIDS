@@ -30,3 +30,8 @@ externalPort = 80
 [[ports]]
 localPort = 20960
 externalPort = 3000
+
+[userenv]
+
+[userenv.shared]
+VITE_FIREBASE_PROJECT_ID = "clear-decision-e1368"
