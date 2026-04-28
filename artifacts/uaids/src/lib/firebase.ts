@@ -6,6 +6,7 @@ import {
   type Unsubscribe,
 } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
+import { getStorage, type FirebaseStorage } from "firebase/storage";
 
 const apiKey =
   (import.meta.env.VITE_FIREBASE_API_KEY as string) ||
@@ -70,9 +71,19 @@ function makeStubFirestore(): Firestore {
   return new Proxy({}, handler) as unknown as Firestore;
 }
 
+function makeStubStorage(): FirebaseStorage {
+  const handler: ProxyHandler<object> = {
+    get() {
+      throw authNotConfiguredError();
+    },
+  };
+  return new Proxy({}, handler) as unknown as FirebaseStorage;
+}
+
 let _firebaseApp: FirebaseApp | null = null;
 let _auth: Auth;
 let _db: Firestore;
+let _storage: FirebaseStorage;
 let _googleProvider: GoogleAuthProvider;
 
 if (firebaseConfigured) {
@@ -80,12 +91,14 @@ if (firebaseConfigured) {
     _firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
     _auth = getAuth(_firebaseApp);
     _db = getFirestore(_firebaseApp);
+    _storage = getStorage(_firebaseApp);
     _googleProvider = new GoogleAuthProvider();
     _googleProvider.setCustomParameters({ prompt: "select_account" });
   } catch (err) {
     console.warn("[firebase] init failed; running in unauthenticated mode:", err);
     _auth = makeStubAuth();
     _db = makeStubFirestore();
+    _storage = makeStubStorage();
     _googleProvider = new GoogleAuthProvider();
   }
 } else {
@@ -94,10 +107,12 @@ if (firebaseConfigured) {
   );
   _auth = makeStubAuth();
   _db = makeStubFirestore();
+  _storage = makeStubStorage();
   _googleProvider = new GoogleAuthProvider();
 }
 
 export const firebaseApp = _firebaseApp;
 export const auth = _auth;
 export const db = _db;
+export const storage = _storage;
 export const googleProvider = _googleProvider;

@@ -17,14 +17,29 @@ import {
   Activity,
   FileCheck,
   Briefcase,
+  Cloud,
+  Trash2,
+  RotateCw,
 } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { recordAudit } from "@/lib/auditStats";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  uploadDataset as storageUpload,
+  listDatasets,
+  deleteDataset,
+  fetchDatasetAsFile,
+  type SavedDataset,
+} from "@/lib/firebaseStorage";
+import { firebaseConfigured } from "@/lib/firebase";
 
 export function UploadPage() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [savedNotice, setSavedNotice] = useState<string | null>(null);
   const qc = useQueryClient();
+  const { user } = useAuth();
+  const canPersist = firebaseConfigured && !!user;
 
   const status = useQuery({
     queryKey: ["status"],
@@ -33,14 +48,53 @@ export function UploadPage() {
     retry: false,
   });
 
+  const savedDatasets = useQuery({
+    queryKey: ["saved-datasets", user?.uid ?? "guest"],
+    queryFn: () => (user ? listDatasets(user.uid) : Promise.resolve([])),
+    enabled: canPersist,
+    staleTime: 30_000,
+  });
+
   const upload = useMutation({
-    mutationFn: (file: File) => api.uploadDataset(file),
+    mutationFn: async (file: File) => {
+      const result = await api.uploadDataset(file);
+      if (canPersist && user) {
+        try {
+          await storageUpload(user.uid, file);
+          setSavedNotice(`Saved ${file.name} to your account.`);
+        } catch (err) {
+          console.warn("[upload] Firebase Storage save failed:", err);
+        }
+      }
+      return result;
+    },
+    onSuccess: () => {
+      recordAudit("jobs");
+      qc.invalidateQueries({ queryKey: ["status"] });
+      qc.invalidateQueries({ queryKey: ["bias-report"] });
+      qc.invalidateQueries({ queryKey: ["saved-datasets"] });
+    },
+    onError: (e: unknown) => setError(e instanceof Error ? e.message : "Upload failed"),
+  });
+
+  const reuploadSaved = useMutation({
+    mutationFn: async (dataset: SavedDataset) => {
+      const file = await fetchDatasetAsFile(dataset.downloadURL, dataset.name);
+      return api.uploadDataset(file);
+    },
     onSuccess: () => {
       recordAudit("jobs");
       qc.invalidateQueries({ queryKey: ["status"] });
       qc.invalidateQueries({ queryKey: ["bias-report"] });
     },
-    onError: (e: unknown) => setError(e instanceof Error ? e.message : "Upload failed"),
+    onError: (e: unknown) => setError(e instanceof Error ? e.message : "Re-upload failed"),
+  });
+
+  const removeSaved = useMutation({
+    mutationFn: (dataset: SavedDataset) => deleteDataset(dataset.fullPath),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["saved-datasets"] });
+    },
   });
 
   const seed = useMutation({
@@ -145,6 +199,12 @@ export function UploadPage() {
             {upload.isPending && (
               <div className="text-sm text-muted-foreground">Uploading and analyzing…</div>
             )}
+            {savedNotice && (
+              <div className="flex items-start gap-2 p-3 rounded-md bg-primary/10 text-primary text-sm">
+                <Cloud className="w-4 h-4 mt-0.5" />
+                {savedNotice}
+              </div>
+            )}
             {seed.data && <UploadSummary data={seed.data} />}
             {error && (
               <div className="flex items-start gap-2 p-3 rounded-md bg-destructive/10 text-destructive text-sm">
@@ -163,6 +223,77 @@ export function UploadPage() {
           </CardContent>
         </Card>
       </ScrollReveal>
+
+      {canPersist && (
+        <ScrollReveal delay={120}>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Cloud className="w-5 h-5" /> Your saved datasets
+              </CardTitle>
+              <CardDescription>
+                Resume CSVs you upload while signed in are stored privately in your account so
+                you can re-run audits without re-uploading.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {savedDatasets.isLoading ? (
+                <div className="text-sm text-muted-foreground">Loading saved datasets…</div>
+              ) : savedDatasets.data && savedDatasets.data.length > 0 ? (
+                <ul className="space-y-2">
+                  {savedDatasets.data.map((d) => (
+                    <li
+                      key={d.fullPath}
+                      className="flex items-center justify-between gap-3 p-3 rounded-md border bg-card hover-elevate"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <div className="text-sm font-medium truncate">{d.name}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {(d.size / 1024).toFixed(1)} KB ·{" "}
+                          {new Date(d.uploadedAt).toLocaleString()}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => reuploadSaved.mutate(d)}
+                          disabled={reuploadSaved.isPending}
+                        >
+                          <RotateCw className="w-3.5 h-3.5 mr-1.5" />
+                          Re-run
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          asChild
+                        >
+                          <a href={d.downloadURL} download={d.name}>
+                            <Download className="w-3.5 h-3.5" />
+                          </a>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => removeSaved.mutate(d)}
+                          disabled={removeSaved.isPending}
+                          aria-label="Delete dataset"
+                        >
+                          <Trash2 className="w-3.5 h-3.5 text-destructive" />
+                        </Button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="text-sm text-muted-foreground">
+                  No saved datasets yet. Upload a CSV above and it will appear here.
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </ScrollReveal>
+      )}
 
       <ScrollReveal delay={160}>
         <Card>
