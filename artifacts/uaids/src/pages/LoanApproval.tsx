@@ -10,6 +10,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import UserMenu from "@/components/UserMenu";
 import HamburgerMenu from "@/components/HamburgerMenu";
 import BankingAISystem from "@/components/BankingAISystem";
+import ScrollReveal from "@/components/ScrollReveal";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 export default function LoanApproval() {
@@ -45,6 +46,7 @@ export default function LoanApproval() {
       </header>
 
       <main className="container max-w-7xl mx-auto px-6 py-8 space-y-6">
+        <ScrollReveal>
         <section className="relative overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-primary/10 via-card/40 to-accent/10 p-6 sm:p-8 animate-fade-in">
           <div className="absolute -top-20 -right-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-24 -left-12 w-72 h-72 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
@@ -70,25 +72,33 @@ export default function LoanApproval() {
             </div>
           </div>
         </section>
+        </ScrollReveal>
 
         <div className="grid md:grid-cols-3 gap-4">
-          <FrameworkCard
-            phase="MEASURE"
-            icon={Brain}
-            description="Detect race / gender / age / marital composition. Train baseline models per product and compute per-group selection rates, TPR, FPR, AUC, MAE and limit ratio."
-          />
-          <FrameworkCard
-            phase="FLAG"
-            icon={AlertTriangle}
-            description="Critical alerts on Disparate Impact < 0.8 (4/5ths rule), ΔTPR > 5%, ΔFPR > 5%, limit ratio < 0.8, MAE gap > $500, and historical bias gap > 20%."
-          />
-          <FrameworkCard
-            phase="FIX"
-            icon={Scale}
-            description="Apply per-group reweighting, retrain all three product models, and add a confidence-based reject option that routes borderline applicants to a human loan officer."
-          />
+          <ScrollReveal direction="up" delay={0}>
+            <FrameworkCard
+              phase="MEASURE"
+              icon={Brain}
+              description="Detect race / gender / age / marital composition. Train baseline models per product and compute per-group selection rates, TPR, FPR, AUC, MAE and limit ratio."
+            />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={100}>
+            <FrameworkCard
+              phase="FLAG"
+              icon={AlertTriangle}
+              description="Critical alerts on Disparate Impact < 0.8 (4/5ths rule), ΔTPR > 5%, ΔFPR > 5%, limit ratio < 0.8, MAE gap > $500, and historical bias gap > 20%."
+            />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={200}>
+            <FrameworkCard
+              phase="FIX"
+              icon={Scale}
+              description="Apply per-group reweighting, retrain all three product models, and add a confidence-based reject option that routes borderline applicants to a human loan officer."
+            />
+          </ScrollReveal>
         </div>
 
+        <ScrollReveal>
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
@@ -106,6 +116,7 @@ export default function LoanApproval() {
             <BankingAISystem />
           </CardContent>
         </Card>
+        </ScrollReveal>
       </main>
     </div>
   );

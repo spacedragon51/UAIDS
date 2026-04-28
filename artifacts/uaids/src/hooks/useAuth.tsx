@@ -7,6 +7,7 @@ import {
   signInWithRedirect,
   getRedirectResult,
   sendPasswordResetEmail,
+  signInAnonymously,
   signOut as fbSignOut,
   updateProfile as fbUpdateProfile,
   updateEmail as fbUpdateEmail,
@@ -47,6 +48,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, displayName?: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
+  signInAsGuest: () => Promise<void>;
   sendPasswordReset: (email: string) => Promise<void>;
   updatePassword: (currentPassword: string, newPassword: string) => Promise<void>;
   hasPasswordProvider: () => boolean;
@@ -192,6 +194,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const signInAsGuest = async () => {
+    if (!firebaseConfigured) throw authNotConfiguredError();
+    const cred = await signInAnonymously(auth);
+    if (!cred.user.displayName) {
+      try {
+        await fbUpdateProfile(cred.user, { displayName: "Guest" });
+      } catch {
+        /* ignore */
+      }
+    }
+    ensureUserDoc(cred.user, "viewer").catch(() => {});
+  };
+
   const signOut = async () => {
     await fbSignOut(auth);
   };
@@ -238,7 +253,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ session: user, user, roles, loading, signOut, signIn, signUp, signInWithGoogle, sendPasswordReset, updatePassword, hasPasswordProvider, hasRole, updateProfile }}
+      value={{ session: user, user, roles, loading, signOut, signIn, signUp, signInWithGoogle, signInAsGuest, sendPasswordReset, updatePassword, hasPasswordProvider, hasRole, updateProfile }}
     >
       {children}
     </AuthContext.Provider>

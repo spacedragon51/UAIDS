@@ -6,6 +6,7 @@ import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
 import HamburgerMenu from "@/components/HamburgerMenu";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Settings() {
   const { signOut, updatePassword, hasPasswordProvider } = useAuth();
@@ -87,9 +88,12 @@ export default function Settings() {
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
 
-        <h1 className="text-3xl font-extrabold mb-2">Settings</h1>
-        <p className="text-muted-foreground mb-8">Manage your application preferences and notifications.</p>
+        <ScrollReveal>
+          <h1 className="text-3xl font-extrabold mb-2">Settings</h1>
+          <p className="text-muted-foreground mb-8">Manage your application preferences and notifications.</p>
+        </ScrollReveal>
 
+        <ScrollReveal delay={80}>
         <div className="space-y-5">
           <div className="glass-card p-6">
             <div className="flex items-center gap-2 mb-5">
@@ -292,6 +296,7 @@ export default function Settings() {
             </button>
           </div>
         </div>
+        </ScrollReveal>
       </main>
       </div>
     </div>

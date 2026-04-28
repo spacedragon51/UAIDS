@@ -6,6 +6,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
 import UserMenu from "@/components/UserMenu";
 import HamburgerMenu from "@/components/HamburgerMenu";
+import ScrollReveal from "@/components/ScrollReveal";
 
 import { UploadPage } from "./jobScreening/Upload";
 import { BiasAuditPage } from "./jobScreening/BiasAudit";
@@ -57,6 +58,7 @@ function JobScreeningLayout() {
       </header>
 
       <main className="container max-w-7xl mx-auto px-6 py-8 space-y-6">
+        <ScrollReveal>
         <section className="relative overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-primary/10 via-card/40 to-accent/10 p-6 sm:p-8 animate-fade-in">
           <div className="absolute -top-20 -right-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-24 -left-12 w-72 h-72 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
@@ -73,6 +75,7 @@ function JobScreeningLayout() {
             </p>
           </div>
         </section>
+        </ScrollReveal>
 
         <nav className="glass-card p-2 flex flex-wrap gap-1 sticky top-[72px] z-40">
           {NAV.map((n) => {

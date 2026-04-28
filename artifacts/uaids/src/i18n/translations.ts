@@ -1,0 +1,328 @@
+import { en } from "./en";
+
+type Partial<T> = { [P in keyof T]?: Partial<T[P]> | T[P] };
+type EnShape = typeof en;
+
+export const translations: Record<string, Partial<EnShape>> = {
+  es: {
+    home: {
+      nav: { services: "Servicios", about: "Nosotros", features: "Funciones", login: "Iniciar sesión" },
+      hero: {
+        badge: "Kit de Equidad de IA de Código Abierto",
+        title1: "IA Imparcial",
+        title2: "Sistema de Decisión",
+        description:
+          "Un proyecto de investigación abierto para medir y mitigar el sesgo en sistemas de decisión de IA — en salud, banca y contratación. Construido sobre AIF360 y Fairlearn.",
+        getStarted: "Pruébalo Gratis",
+        learnMore: "Saber más",
+        stat1: "Dominios Cubiertos",
+        stat2: "Métricas de Equidad",
+        stat3: "Código Abierto",
+        stat4: "Metodología",
+      },
+      services: {
+        title: "Nuestros Servicios",
+        subtitle: "Detección y mitigación de sesgo de extremo a extremo para sistemas de IA",
+      },
+      about: { title: "Acerca de UAIDS", pipeline: "Nuestro Proceso" },
+      cta: { title: "¿Listo para hacer justa tu IA?" },
+    },
+    header: { auditActive: "Auditoría Activa" },
+    auth: {
+      welcomeBack: "Bienvenido de nuevo",
+      createAccount: "Crear cuenta",
+      signIn: "Iniciar sesión",
+      signUp: "¿Necesitas una cuenta? Regístrate",
+      haveAccount: "¿Ya tienes una cuenta? Inicia sesión",
+      forgotPassword: "¿Olvidaste tu contraseña?",
+      resetPassword: "Restablecer contraseña",
+      email: "Correo electrónico",
+      password: "Contraseña",
+      displayName: "Nombre",
+      pleaseWait: "Por favor espera...",
+    },
+    domains: { healthcare: "Salud", banking: "Banca", job: "Selección de Personal" },
+  },
+
+  fr: {
+    home: {
+      nav: { services: "Services", about: "À propos", features: "Fonctionnalités", login: "Connexion" },
+      hero: {
+        badge: "Boîte à outils d'équité IA open-source",
+        title1: "IA sans biais",
+        title2: "Système de décision",
+        description:
+          "Un projet de recherche ouvert pour mesurer et atténuer les biais dans les systèmes de décision IA — santé, banque et recrutement. Basé sur AIF360 et Fairlearn.",
+        getStarted: "Essayer gratuitement",
+        learnMore: "En savoir plus",
+        stat1: "Domaines couverts",
+        stat2: "Métriques d'équité",
+        stat3: "Open source",
+        stat4: "Méthodologie",
+      },
+      services: {
+        title: "Nos services",
+        subtitle: "Pipeline de détection et d'atténuation des biais pour les systèmes IA",
+      },
+      about: { title: "À propos d'UAIDS", pipeline: "Notre pipeline" },
+      cta: { title: "Prêt à rendre votre IA équitable ?" },
+    },
+    header: { auditActive: "Audit actif" },
+    auth: {
+      welcomeBack: "Bon retour",
+      createAccount: "Créer un compte",
+      signIn: "Connexion",
+      signUp: "Besoin d'un compte ? Inscrivez-vous",
+      haveAccount: "Vous avez déjà un compte ? Connectez-vous",
+      forgotPassword: "Mot de passe oublié ?",
+      resetPassword: "Réinitialiser le mot de passe",
+      email: "E-mail",
+      password: "Mot de passe",
+      displayName: "Nom d'affichage",
+      pleaseWait: "Veuillez patienter...",
+    },
+    domains: { healthcare: "Santé", banking: "Banque", job: "Recrutement" },
+  },
+
+  de: {
+    home: {
+      nav: { services: "Dienste", about: "Über uns", features: "Funktionen", login: "Anmelden" },
+      hero: {
+        badge: "Open-Source KI-Fairness-Toolkit",
+        title1: "Unvoreingenommene KI",
+        title2: "Entscheidungssystem",
+        description:
+          "Ein offenes Forschungsprojekt zur Messung und Minderung von Verzerrungen in KI-Entscheidungssystemen — in Gesundheit, Banken und Einstellung. Basierend auf AIF360 und Fairlearn.",
+        getStarted: "Kostenlos testen",
+        learnMore: "Mehr erfahren",
+        stat1: "Abgedeckte Bereiche",
+        stat2: "Fairness-Metriken",
+        stat3: "Open Source",
+        stat4: "Methodik",
+      },
+      services: {
+        title: "Unsere Dienste",
+        subtitle: "End-to-End-Verzerrungserkennung und -minderung für KI-Systeme",
+      },
+      about: { title: "Über UAIDS", pipeline: "Unser Prozess" },
+      cta: { title: "Bereit, Ihre KI fair zu machen?" },
+    },
+    header: { auditActive: "Audit aktiv" },
+    auth: {
+      welcomeBack: "Willkommen zurück",
+      createAccount: "Konto erstellen",
+      signIn: "Anmelden",
+      signUp: "Benötigen Sie ein Konto? Registrieren",
+      haveAccount: "Haben Sie bereits ein Konto? Anmelden",
+      forgotPassword: "Passwort vergessen?",
+      resetPassword: "Passwort zurücksetzen",
+      email: "E-Mail",
+      password: "Passwort",
+      displayName: "Anzeigename",
+      pleaseWait: "Bitte warten...",
+    },
+    domains: { healthcare: "Gesundheit", banking: "Bankwesen", job: "Bewerberauswahl" },
+  },
+
+  pt: {
+    home: {
+      nav: { services: "Serviços", about: "Sobre", features: "Recursos", login: "Entrar" },
+      hero: {
+        badge: "Kit de Equidade de IA Open-Source",
+        title1: "IA Imparcial",
+        title2: "Sistema de Decisão",
+        description:
+          "Um projeto de pesquisa aberto para medir e mitigar viés em sistemas de decisão de IA — saúde, bancos e contratação. Construído sobre AIF360 e Fairlearn.",
+        getStarted: "Experimente Grátis",
+        learnMore: "Saber mais",
+        stat1: "Domínios Cobertos",
+        stat2: "Métricas de Equidade",
+        stat3: "Código Aberto",
+        stat4: "Metodologia",
+      },
+      services: {
+        title: "Nossos Serviços",
+        subtitle: "Pipeline completo de detecção e mitigação de viés para sistemas de IA",
+      },
+      about: { title: "Sobre o UAIDS", pipeline: "Nosso Processo" },
+      cta: { title: "Pronto para tornar sua IA justa?" },
+    },
+    header: { auditActive: "Auditoria Ativa" },
+    auth: {
+      welcomeBack: "Bem-vindo de volta",
+      createAccount: "Criar conta",
+      signIn: "Entrar",
+      signUp: "Precisa de uma conta? Cadastre-se",
+      haveAccount: "Já tem uma conta? Entre",
+      forgotPassword: "Esqueceu a senha?",
+      resetPassword: "Redefinir senha",
+      email: "E-mail",
+      password: "Senha",
+      displayName: "Nome de exibição",
+      pleaseWait: "Por favor aguarde...",
+    },
+    domains: { healthcare: "Saúde", banking: "Bancos", job: "Recrutamento" },
+  },
+
+  hi: {
+    home: {
+      nav: { services: "सेवाएं", about: "हमारे बारे में", features: "विशेषताएं", login: "साइन इन" },
+      hero: {
+        badge: "ओपन-सोर्स AI निष्पक्षता टूलकिट",
+        title1: "निष्पक्ष AI",
+        title2: "निर्णय प्रणाली",
+        description:
+          "AI निर्णय प्रणालियों में पूर्वाग्रह को मापने और कम करने के लिए एक खुली शोध परियोजना — स्वास्थ्य, बैंकिंग और भर्ती। AIF360 और Fairlearn पर आधारित।",
+        getStarted: "मुफ्त में आज़माएं",
+        learnMore: "और जानें",
+        stat1: "कवर किए गए डोमेन",
+        stat2: "निष्पक्षता मीट्रिक",
+        stat3: "ओपन सोर्स",
+        stat4: "पद्धति",
+      },
+      services: {
+        title: "हमारी सेवाएं",
+        subtitle: "AI सिस्टम के लिए एंड-टू-एंड पूर्वाग्रह पहचान और शमन पाइपलाइन",
+      },
+      about: { title: "UAIDS के बारे में", pipeline: "हमारी पाइपलाइन" },
+      cta: { title: "अपनी AI को निष्पक्ष बनाने के लिए तैयार?" },
+    },
+    header: { auditActive: "ऑडिट सक्रिय" },
+    auth: {
+      welcomeBack: "वापसी पर स्वागत है",
+      createAccount: "खाता बनाएं",
+      signIn: "साइन इन",
+      signUp: "खाता चाहिए? साइन अप करें",
+      haveAccount: "पहले से खाता है? साइन इन करें",
+      forgotPassword: "पासवर्ड भूल गए?",
+      resetPassword: "पासवर्ड रीसेट करें",
+      email: "ईमेल",
+      password: "पासवर्ड",
+      displayName: "प्रदर्शन नाम",
+      pleaseWait: "कृपया प्रतीक्षा करें...",
+    },
+    domains: { healthcare: "स्वास्थ्य", banking: "बैंकिंग", job: "भर्ती स्क्रीनिंग" },
+  },
+
+  zh: {
+    home: {
+      nav: { services: "服务", about: "关于我们", features: "功能", login: "登录" },
+      hero: {
+        badge: "开源 AI 公平性工具包",
+        title1: "无偏见的 AI",
+        title2: "决策系统",
+        description:
+          "一个开放的研究项目，用于测量和缓解 AI 决策系统中的偏见——涵盖医疗、银行和招聘领域。基于 AIF360 和 Fairlearn 构建。",
+        getStarted: "免费试用",
+        learnMore: "了解更多",
+        stat1: "覆盖领域",
+        stat2: "公平性指标",
+        stat3: "开源",
+        stat4: "方法论",
+      },
+      services: {
+        title: "我们的服务",
+        subtitle: "面向 AI 系统的端到端偏见检测和缓解管道",
+      },
+      about: { title: "关于 UAIDS", pipeline: "我们的流程" },
+      cta: { title: "准备好让您的 AI 公平了吗？" },
+    },
+    header: { auditActive: "审计中" },
+    auth: {
+      welcomeBack: "欢迎回来",
+      createAccount: "创建账户",
+      signIn: "登录",
+      signUp: "需要账户？注册",
+      haveAccount: "已有账户？登录",
+      forgotPassword: "忘记密码？",
+      resetPassword: "重置密码",
+      email: "电子邮箱",
+      password: "密码",
+      displayName: "显示名称",
+      pleaseWait: "请稍候...",
+    },
+    domains: { healthcare: "医疗", banking: "银行", job: "招聘筛选" },
+  },
+
+  ja: {
+    home: {
+      nav: { services: "サービス", about: "私たちについて", features: "機能", login: "サインイン" },
+      hero: {
+        badge: "オープンソース AI 公平性ツールキット",
+        title1: "公平な AI",
+        title2: "意思決定システム",
+        description:
+          "AI 意思決定システムのバイアスを測定・緩和するためのオープン研究プロジェクト — 医療、銀行、採用分野。AIF360 と Fairlearn に基づく。",
+        getStarted: "無料で試す",
+        learnMore: "詳細を見る",
+        stat1: "対象領域",
+        stat2: "公平性指標",
+        stat3: "オープンソース",
+        stat4: "方法論",
+      },
+      services: {
+        title: "サービス",
+        subtitle: "AI システム向けエンドツーエンドのバイアス検出と緩和パイプライン",
+      },
+      about: { title: "UAIDS について", pipeline: "私たちのパイプライン" },
+      cta: { title: "AI を公平にする準備はできましたか？" },
+    },
+    header: { auditActive: "監査実行中" },
+    auth: {
+      welcomeBack: "おかえりなさい",
+      createAccount: "アカウント作成",
+      signIn: "サインイン",
+      signUp: "アカウントが必要？登録",
+      haveAccount: "アカウントをお持ちですか？サインイン",
+      forgotPassword: "パスワードをお忘れですか？",
+      resetPassword: "パスワードをリセット",
+      email: "メール",
+      password: "パスワード",
+      displayName: "表示名",
+      pleaseWait: "お待ちください...",
+    },
+    domains: { healthcare: "医療", banking: "銀行", job: "採用スクリーニング" },
+  },
+
+  ar: {
+    home: {
+      nav: { services: "الخدمات", about: "من نحن", features: "الميزات", login: "تسجيل الدخول" },
+      hero: {
+        badge: "مجموعة أدوات عدالة الذكاء الاصطناعي مفتوحة المصدر",
+        title1: "ذكاء اصطناعي غير منحاز",
+        title2: "نظام اتخاذ القرار",
+        description:
+          "مشروع بحث مفتوح لقياس وتخفيف التحيز في أنظمة قرارات الذكاء الاصطناعي — الرعاية الصحية والمصارف والتوظيف. مبني على AIF360 و Fairlearn.",
+        getStarted: "جربه مجاناً",
+        learnMore: "اعرف المزيد",
+        stat1: "المجالات المغطاة",
+        stat2: "مقاييس العدالة",
+        stat3: "مفتوح المصدر",
+        stat4: "المنهجية",
+      },
+      services: {
+        title: "خدماتنا",
+        subtitle: "خط متكامل لاكتشاف وتخفيف التحيز في أنظمة الذكاء الاصطناعي",
+      },
+      about: { title: "حول UAIDS", pipeline: "خط العمل لدينا" },
+      cta: { title: "هل أنت مستعد لجعل ذكائك الاصطناعي عادلاً؟" },
+    },
+    header: { auditActive: "التدقيق نشط" },
+    auth: {
+      welcomeBack: "مرحباً بعودتك",
+      createAccount: "إنشاء حساب",
+      signIn: "تسجيل الدخول",
+      signUp: "تحتاج حساباً؟ سجل",
+      haveAccount: "لديك حساب بالفعل؟ سجل دخول",
+      forgotPassword: "نسيت كلمة المرور؟",
+      resetPassword: "إعادة تعيين كلمة المرور",
+      email: "البريد الإلكتروني",
+      password: "كلمة المرور",
+      displayName: "الاسم المعروض",
+      pleaseWait: "يرجى الانتظار...",
+    },
+    domains: { healthcare: "الرعاية الصحية", banking: "المصارف", job: "فرز التوظيف" },
+  },
+};
+
+export const RTL_LANGUAGES = new Set(["ar", "he", "fa", "ur"]);

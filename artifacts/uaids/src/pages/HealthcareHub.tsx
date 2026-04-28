@@ -8,6 +8,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
 import UserMenu from "@/components/UserMenu";
 import HamburgerMenu from "@/components/HamburgerMenu";
+import ScrollReveal from "@/components/ScrollReveal";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface SystemEntry {
@@ -67,6 +68,7 @@ export default function HealthcareHub() {
       </header>
 
       <main className="container max-w-6xl mx-auto px-6 py-10 space-y-10">
+        <ScrollReveal>
         <section className="rounded-3xl border border-border/60 bg-gradient-to-br from-primary/10 via-card/40 to-card/10 p-8 md:p-12">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
             <Stethoscope size={14} /> FairScope Health
@@ -85,16 +87,20 @@ export default function HealthcareHub() {
             <Pill icon={Sparkles}>Toggleable bias mitigations</Pill>
           </div>
         </section>
+        </ScrollReveal>
 
+        <ScrollReveal delay={80}>
         <section>
           <h2 className="text-xl md:text-2xl font-bold mb-4">Available systems</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {SYSTEMS.map((s) => (
-              <SystemCard key={s.id} entry={s} />
+            {SYSTEMS.map((s, i) => (
+              <ScrollReveal key={s.id} delay={120 + i * 80}>
+                <SystemCard entry={s} />
+              </ScrollReveal>
             ))}
-            <ComingSoonCard />
           </div>
         </section>
+        </ScrollReveal>
       </main>
     </div>
   );
@@ -147,28 +153,3 @@ function SystemCard({ entry }: { entry: SystemEntry }) {
   );
 }
 
-function ComingSoonCard() {
-  return (
-    <Card className="h-full border-dashed border-border/60 bg-card/30">
-      <CardHeader>
-        <div className="flex items-start gap-3">
-          <div className="w-11 h-11 rounded-xl bg-muted text-muted-foreground flex items-center justify-center shrink-0">
-            <Stethoscope size={22} />
-          </div>
-          <div className="flex-1">
-            <CardTitle className="text-lg text-muted-foreground">More clinical systems</CardTitle>
-            <CardDescription className="text-xs mt-1">Radiology, pathology, sepsis risk — coming soon</CardDescription>
-          </div>
-          <span className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full bg-muted text-muted-foreground font-semibold">
-            Soon
-          </span>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          Additional MEASURE → FLAG → FIX modules will appear here as new clinical AI systems are onboarded.
-        </p>
-      </CardContent>
-    </Card>
-  );
-}

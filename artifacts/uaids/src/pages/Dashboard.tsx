@@ -20,6 +20,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
 import HamburgerMenu from "@/components/HamburgerMenu";
+import ScrollReveal from "@/components/ScrollReveal";
 import { logAuditEvent } from "@/hooks/useAuditLog";
 import { Home, FileSearch, Banknote, Activity, Shield, Sparkles, ArrowDown, BarChart3, Layers, Stethoscope } from "lucide-react";
 import { getAuditLogs } from "@/hooks/useAuditLog";
@@ -77,33 +78,53 @@ export default function Dashboard() {
 
   const CorePipeline = (
     <div key={`${selectedDomain}-${resetKey[selectedDomain]}`} className="space-y-6">
-      <CsvUploader
-        domain={selectedDomain}
-        onUploadStart={() => {
-          setMitigatedMap((prev) => ({ ...prev, [selectedDomain]: false }));
-          setAnalysisReadyMap((prev) => ({ ...prev, [selectedDomain]: false }));
-          setCsvGroupsMap((prev) => ({ ...prev, [selectedDomain]: null }));
-        }}
-        onUploadComplete={() => setAnalysisReadyMap((prev) => ({ ...prev, [selectedDomain]: true }))}
-        onAnalysis={(groups) => setCsvGroupsMap((prev) => ({ ...prev, [selectedDomain]: groups }))}
-      />
-      <StatsBar domain={domain} mitigated={mitigated} analysisReady={analysisReady} />
+      <ScrollReveal>
+        <CsvUploader
+          domain={selectedDomain}
+          onUploadStart={() => {
+            setMitigatedMap((prev) => ({ ...prev, [selectedDomain]: false }));
+            setAnalysisReadyMap((prev) => ({ ...prev, [selectedDomain]: false }));
+            setCsvGroupsMap((prev) => ({ ...prev, [selectedDomain]: null }));
+          }}
+          onUploadComplete={() => setAnalysisReadyMap((prev) => ({ ...prev, [selectedDomain]: true }))}
+          onAnalysis={(groups) => setCsvGroupsMap((prev) => ({ ...prev, [selectedDomain]: groups }))}
+        />
+      </ScrollReveal>
+      <ScrollReveal delay={60}>
+        <StatsBar domain={domain} mitigated={mitigated} analysisReady={analysisReady} />
+      </ScrollReveal>
       <div className="grid md:grid-cols-2 gap-6">
-        <RepresentationPanel domain={domain} analysisReady={analysisReady} />
-        <FairnessPanel domain={domain} analysisReady={analysisReady} />
+        <ScrollReveal direction="left" delay={80}>
+          <RepresentationPanel domain={domain} analysisReady={analysisReady} />
+        </ScrollReveal>
+        <ScrollReveal direction="right" delay={140}>
+          <FairnessPanel domain={domain} analysisReady={analysisReady} />
+        </ScrollReveal>
       </div>
-      <MitigationPanel domain={domain} mitigated={mitigated} onMitigate={handleMitigate} analysisReady={analysisReady} />
-      <DomainAnalysisActions domain={selectedDomain} domainConfig={domain} mitigated={mitigated} onReset={handleResetDomain} />
+      <ScrollReveal delay={60}>
+        <MitigationPanel domain={domain} mitigated={mitigated} onMitigate={handleMitigate} analysisReady={analysisReady} />
+      </ScrollReveal>
+      <ScrollReveal delay={60}>
+        <DomainAnalysisActions domain={selectedDomain} domainConfig={domain} mitigated={mitigated} onReset={handleResetDomain} />
+      </ScrollReveal>
       <div className="grid md:grid-cols-2 gap-6">
-        <ModelVersionPanel domain={selectedDomain} />
-        <AlertsPanel />
+        <ScrollReveal direction="left" delay={80}>
+          <ModelVersionPanel domain={selectedDomain} />
+        </ScrollReveal>
+        <ScrollReveal direction="right" delay={140}>
+          <AlertsPanel />
+        </ScrollReveal>
       </div>
-      <AuditTrailPanel />
-      <div className="glass-card p-4 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
-        <span>{t("footer.sensitiveAttr")}: <span className="text-foreground font-medium">{domain.sensitiveAttribute}</span></span>
-        <span>{t("footer.pipeline")}</span>
-        <span>{t("footer.framework")}</span>
-      </div>
+      <ScrollReveal delay={60}>
+        <AuditTrailPanel />
+      </ScrollReveal>
+      <ScrollReveal delay={60}>
+        <div className="glass-card p-4 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+          <span>{t("footer.sensitiveAttr")}: <span className="text-foreground font-medium">{domain.sensitiveAttribute}</span></span>
+          <span>{t("footer.pipeline")}</span>
+          <span>{t("footer.framework")}</span>
+        </div>
+      </ScrollReveal>
     </div>
   );
 

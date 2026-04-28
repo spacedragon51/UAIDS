@@ -15,10 +15,12 @@ import HamburgerMenu from "@/components/HamburgerMenu";
 import WelcomeBackSection from "@/components/WelcomeBackSection";
 import LoggedInHighlights from "@/components/LoggedInHighlights";
 import { useAuth } from "@/hooks/useAuth";
+import { useAuditStats } from "@/lib/auditStats";
 
 export default function Homepage() {
   const { user, signOut } = useAuth();
   const { t } = useTranslation();
+  const stats = useAuditStats();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const scrollTo = (id: string) => {
@@ -157,14 +159,14 @@ export default function Homepage() {
             </ScrollReveal>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-16 max-w-3xl mx-auto">
               {[
-                { val: "3+", label: t("home.hero.stat1") },
-                { val: "99.9%", label: t("home.hero.stat2") },
-                { val: "24/7", label: t("home.hero.stat3") },
-                { val: "7yr", label: t("home.hero.stat4") },
+                { val: String(stats.healthcare), label: "Healthcare scans" },
+                { val: String(stats.loan), label: "Loan analyses" },
+                { val: String(stats.jobs), label: "Resume audits" },
+                { val: String(stats.total), label: "Total audits run" },
               ].map((s, i) => (
                 <ScrollReveal key={s.label} delay={100 * i}>
                   <div className="glass-card p-4 text-center">
-                    <div className="text-2xl font-bold text-primary">{s.val}</div>
+                    <div className="text-2xl font-bold text-primary tabular-nums">{s.val}</div>
                     <div className="text-xs text-muted-foreground mt-1">{s.label}</div>
                   </div>
                 </ScrollReveal>

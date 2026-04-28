@@ -15,6 +15,8 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
 import UserMenu from "@/components/UserMenu";
 import HamburgerMenu from "@/components/HamburgerMenu";
+import ScrollReveal from "@/components/ScrollReveal";
+import { recordAudit } from "@/lib/auditStats";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -98,8 +100,12 @@ export default function Healthcare() {
       </header>
 
       <main className="container max-w-7xl mx-auto px-6 py-8 space-y-8">
-        <Hero />
-        <MelanomaWorkspace />
+        <ScrollReveal>
+          <Hero />
+        </ScrollReveal>
+        <ScrollReveal delay={80}>
+          <MelanomaWorkspace />
+        </ScrollReveal>
       </main>
     </div>
   );
@@ -143,6 +149,7 @@ function MelanomaWorkspace() {
   const recordAnalysis = (m: ImageMetrics) => {
     setMetrics(m);
     setHistory((prev) => [...prev, m]);
+    recordAudit("healthcare");
   };
 
   const onFile = async (file: File | null | undefined) => {

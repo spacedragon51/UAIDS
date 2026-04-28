@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation, Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Shield, Mail, Lock, User, ArrowRight, Home, Sparkles, LogIn, UserPlus, X, CheckCircle2 } from "lucide-react";
+import { Shield, Mail, Lock, User, ArrowRight, Home, Sparkles, LogIn, UserPlus, X, CheckCircle2, UserCircle2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import Logo from "@/components/Logo";
@@ -9,7 +9,8 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Auth() {
   const { t } = useTranslation();
-  const { user, signIn, signUp, signInWithGoogle, sendPasswordReset } = useAuth();
+  const { user, signIn, signUp, signInWithGoogle, signInAsGuest, sendPasswordReset } = useAuth();
+  const [guestLoading, setGuestLoading] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
@@ -63,7 +64,18 @@ export default function Auth() {
     setGoogleLoading(false);
   };
 
-  if (user) return <Navigate to="/dashboard" replace />;
+  const handleGuest = async () => {
+    setGuestLoading(true);
+    setError(null);
+    try {
+      await signInAsGuest();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Guest sign-in failed.");
+    }
+    setGuestLoading(false);
+  };
+
+  if (user) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col relative overflow-hidden">
@@ -233,7 +245,7 @@ export default function Auth() {
             <button
               type="button"
               onClick={handleGoogle}
-              disabled={googleLoading || loading}
+              disabled={googleLoading || loading || guestLoading}
               className="w-full py-2.5 bg-secondary border border-border rounded-lg font-semibold text-sm text-foreground hover:bg-secondary/70 hover:border-primary/40 transition-all disabled:opacity-70 flex items-center justify-center gap-2"
             >
               {googleLoading ? (
@@ -253,6 +265,29 @@ export default function Auth() {
                 </>
               )}
             </button>
+
+            <button
+              type="button"
+              onClick={handleGuest}
+              disabled={googleLoading || loading || guestLoading}
+              className="mt-3 w-full py-2.5 bg-transparent border border-dashed border-border rounded-lg font-semibold text-sm text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-secondary/40 transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+              data-testid="button-guest-login"
+            >
+              {guestLoading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-foreground border-t-transparent rounded-full animate-spin" />
+                  Entering as guest…
+                </>
+              ) : (
+                <>
+                  <UserCircle2 size={16} />
+                  Login as Guest
+                </>
+              )}
+            </button>
+            <p className="mt-2 text-center text-[11px] text-muted-foreground">
+              Explore the platform with read-only sample data. No email required.
+            </p>
 
             <div className="mt-5 text-center text-sm text-muted-foreground">
               {isLogin ? (

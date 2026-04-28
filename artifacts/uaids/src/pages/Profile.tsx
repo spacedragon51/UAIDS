@@ -5,6 +5,7 @@ import { User, Mail, Save, Home, LayoutDashboard, ArrowLeft } from "lucide-react
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
 import HamburgerMenu from "@/components/HamburgerMenu";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Profile() {
   const { user, updateProfile } = useAuth();
@@ -41,9 +42,12 @@ export default function Profile() {
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
 
+        <ScrollReveal>
         <h1 className="text-3xl font-extrabold mb-2">Edit Profile</h1>
         <p className="text-muted-foreground mb-8">Update your personal information and display preferences.</p>
+        </ScrollReveal>
 
+        <ScrollReveal delay={80}>
         <div className="glass-card p-8">
           <div className="flex items-center gap-4 mb-8 p-4 bg-primary/5 border border-primary/20 rounded-xl">
             <div className="w-16 h-16 rounded-full bg-primary/15 border-2 border-primary/30 flex items-center justify-center">
@@ -89,6 +93,7 @@ export default function Profile() {
             </div>
           </form>
         </div>
+        </ScrollReveal>
       </main>
     </div>
   );

@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { recordAudit } from "@/lib/auditStats";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import {
@@ -680,6 +681,7 @@ function ApplicantPredict({
       overdraft: decideLoan(models.fixed.overdraft, form, ctx),
       creditLimit: predictLinear(models.fixed.creditLimit, form),
     });
+    recordAudit("loan");
   };
 
   return (
